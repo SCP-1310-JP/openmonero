@@ -2,8 +2,8 @@
 // Created by mwo on 8/12/16.
 //
 
-#ifndef RESTBED_XMR_YOURMONEROREQUESTS_H
-#define RESTBED_XMR_YOURMONEROREQUESTS_H
+#ifndef RESTBED_SIN_YOURSCP1310JP1REQUESTS_H
+#define RESTBED_SIN_YOURSCP1310JP1REQUESTS_H
 
 #include <iostream>
 #include <functional>
@@ -18,8 +18,8 @@
 #include "../ext/restbed/source/restbed"
 
 #ifndef MAKE_RESOURCE
-#define MAKE_RESOURCE(name) auto name = open_monero.make_resource( \
-                           &xmreg::YourMoneroRequests::name, "/" + string(#name));
+#define MAKE_RESOURCE(name) auto name = open_scp1310jp1.make_resource( \
+                           &sineg::YourScp1310jp1Requests::name, "/" + string(#name));
 #endif
 
 
@@ -31,14 +31,14 @@
 // whether they can talk to a given backend without having to know in
 // advance which version they will stop working with
 // Don't go over 32767 for any of these
-#define OPENMONERO_RPC_VERSION_MAJOR 1
-#define OPENMONERO_RPC_VERSION_MINOR 3
-#define MAKE_OPENMONERO_RPC_VERSION(major,minor) (((major)<<16)|(minor))
-#define OPENMONERO_RPC_VERSION \
-    MAKE_OPENMONERO_RPC_VERSION(OPENMONERO_RPC_VERSION_MAJOR, OPENMONERO_RPC_VERSION_MINOR)
+#define OPENSCP1310JP1_RPC_VERSION_MAJOR 1
+#define OPENSCP1310JP1_RPC_VERSION_MINOR 3
+#define MAKE_OPENSCP1310JP1_RPC_VERSION(major,minor) (((major)<<16)|(minor))
+#define OPENSCP1310JP1_RPC_VERSION \
+    MAKE_OPENSCP1310JP1_RPC_VERSION(OPENSCP1310JP1_RPC_VERSION_MAJOR, OPENSCP1310JP1_RPC_VERSION_MINOR)
 
 
-namespace xmreg
+namespace sineg
 {
 
 using namespace std;
@@ -58,16 +58,16 @@ struct handel_
 };
 
 
-class YourMoneroRequests
+class YourScp1310jp1Requests
 {
 
     // this manages all mysql queries
-   shared_ptr<MySqlAccounts> xmr_accounts;
+   shared_ptr<MySqlAccounts> sin_accounts;
 
 
 public:
 
-    YourMoneroRequests(shared_ptr<MySqlAccounts> _acc);
+    YourScp1310jp1Requests(shared_ptr<MySqlAccounts> _acc);
 
     /**
      * A login request handler.
@@ -113,7 +113,7 @@ public:
     get_version(const shared_ptr< Session > session, const Bytes & body);
 
     shared_ptr<Resource>
-    make_resource(function< void (YourMoneroRequests&, const shared_ptr< Session >, const Bytes& ) > handle_func,
+    make_resource(function< void (YourScp1310jp1Requests&, const shared_ptr< Session >, const Bytes& ) > handle_func,
                   const string& path);
 
     static void
@@ -140,9 +140,9 @@ private:
 
     bool
     login_and_start_search_thread(
-            const string& xmr_address,
+            const string& sin_address,
             const string& viewkey,
-            XmrAccount& acc,
+            SinAccount& acc,
             json& j_response);
 
 
@@ -160,4 +160,4 @@ private:
 
 
 }
-#endif //RESTBED_XMR_YOURMONEROREQUESTS_H
+#endif //RESTBED_SIN_YOURSCP1310JP1REQUESTS_H

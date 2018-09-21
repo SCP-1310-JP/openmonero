@@ -12,25 +12,25 @@
 
 #include "CurrentBlockchainStatus.h"
 
-namespace xmreg
+namespace sineg
 {
 
-TxSearch::TxSearch(XmrAccount& _acc)
+TxSearch::TxSearch(SinAccount& _acc)
 {
-    acc = make_shared<XmrAccount>(_acc);
+    acc = make_shared<SinAccount>(_acc);
 
     // creates an mysql connection for this thread
-    xmr_accounts = make_shared<MySqlAccounts>();
+    sin_accounts = make_shared<MySqlAccounts>();
 
     network_type net_type = CurrentBlockchainStatus::net_type;
 
-    if (!xmreg::parse_str_address(acc->address, address, net_type))
+    if (!sineg::parse_str_address(acc->address, address, net_type))
     {
         cerr << "Cant parse string address: " << acc->address << endl;
         throw TxSearchException("Cant parse string address: " + acc->address);
     }
 
-    if (!xmreg::parse_str_secret_key(acc->viewkey, viewkey))
+    if (!sineg::parse_str_secret_key(acc->viewkey, viewkey))
     {
         cerr << "Cant parse the private key: " << acc->viewkey << endl;
         throw TxSearchException("Cant parse private key: " + acc->viewkey);
@@ -144,9 +144,9 @@ TxSearch::search()
             // in a given block;
             unique_ptr<DateTime> blk_timestamp_mysql_format;
 
-            // searching for our incoming and outgoing xmr has two components.
+            // searching for our incoming and outgoing sin has two components.
             //
-            // FIRST. to search for the incoming xmr, we use address, viewkey and
+            // FIRST. to search for the incoming sin, we use address, viewkey and
             // outputs public key. Its straight forward, as this is what viewkey was
             // designed to do.
             //
@@ -204,9 +204,9 @@ TxSearch::search()
 //                     it would be deleting already exisitng tx when rescanning
 //                     blockchain
 //
-//                    XmrTransaction tx_data_existing;
+//                    SinTransaction tx_data_existing;
 //
-//                    if (xmr_accounts->tx_exists(acc->id,
+//                    if (sin_accounts->tx_exists(acc->id,
 //                                                oi_identification.tx_hash_str,
 //                                                tx_data_existing))
 //                    {
@@ -217,9 +217,9 @@ TxSearch::search()
 //                        // if tx is already present for that user,
 //                        // we remove it, as we get it data from scrach
 //
-//                        if (xmr_accounts->delete_tx(tx_data_existing.id) == 0)
+//                        if (sin_accounts->delete_tx(tx_data_existing.id) == 0)
 //                        {
-//                            string msg = fmt::format("xmr_accounts->delete_tx(%d)",
+//                            string msg = fmt::format("sin_accounts->delete_tx(%d)",
 //                                                     tx_data_existing.id);
 //                            cerr << msg << endl;
 //                            throw TxSearchException(msg);
@@ -239,7 +239,7 @@ TxSearch::search()
                         mysql_transaction
                                 = unique_ptr<mysqlpp::Transaction>(
                                            new mysqlpp::Transaction(
-                                                   xmr_accounts->get_connection()
+                                                   sin_accounts->get_connection()
                                                            ->get_connection()));
                     }
 
@@ -252,7 +252,7 @@ TxSearch::search()
                     }
 
 
-                    XmrTransaction tx_data;
+                    SinTransaction tx_data;
 
                     tx_data.hash             = oi_identification.get_tx_hash_str();
                     tx_data.prefix_hash      = oi_identification.get_tx_prefix_hash_str();
@@ -280,7 +280,7 @@ TxSearch::search()
 
 
                     // insert tx_data into mysql's Transactions table
-                    tx_mysql_id = xmr_accounts->insert_tx(tx_data);
+                    tx_mysql_id = sin_accounts->insert_tx(tx_data);
 
                     // get amount specific (i.e., global) indices of outputs
                     if (!CurrentBlockchainStatus::get_amount_specific_indices(
@@ -300,7 +300,7 @@ TxSearch::search()
                     // now add the found outputs into Outputs tables
                     for (auto& out_info: oi_identification.identified_outputs)
                     {
-                        XmrOutput out_data;
+                        SinOutput out_data;
 
                         out_data.account_id   = acc->id;
                         out_data.tx_id        = tx_mysql_id;
@@ -316,7 +316,7 @@ TxSearch::search()
                         out_data.timestamp    = tx_data.timestamp;
 
                         // insert output into mysql's outputs table
-                        uint64_t out_mysql_id = xmr_accounts->insert_output(out_data);
+                        uint64_t out_mysql_id = sin_accounts->insert_output(out_data);
 
                         if (out_mysql_id == 0)
                         {
@@ -361,7 +361,7 @@ TxSearch::search()
                         mysql_transaction
                                 = unique_ptr<mysqlpp::Transaction>(
                                 new mysqlpp::Transaction(
-                                        xmr_accounts->get_connection()
+                                        sin_accounts->get_connection()
                                                 ->get_connection()));
 
                     }
@@ -376,23 +376,23 @@ TxSearch::search()
                         }
                     }
 
-                    vector<XmrInput> inputs_found;
+                    vector<SinInput> inputs_found;
 
                     for (auto& in_info: oi_identification.identified_inputs)
                     {
-                        XmrOutput out;
+                        SinOutput out;
 
-                        if (xmr_accounts->output_exists(pod_to_hex(in_info.out_pub_key), out))
+                        if (sin_accounts->output_exists(pod_to_hex(in_info.out_pub_key), out))
                         {
                             cout << "input uses some mixins which are our outputs"
                                  << out << '\n';
 
                             // seems that this key image is ours.
-                            // so get it information from database into XmrInput
+                            // so get it information from database into SinInput
                             // database structure that will be written later
                             // on into database.
 
-                            XmrInput in_data;
+                            SinInput in_data;
 
                             in_data.account_id  = acc->id;
                             in_data.tx_id       = 0; // for now zero, later we set it
@@ -403,7 +403,7 @@ TxSearch::search()
 
                             inputs_found.push_back(in_data);
 
-                        } // if (xmr_accounts->output_exists(output_public_key_str, out))
+                        } // if (sin_accounts->output_exists(output_public_key_str, out))
 
                     } // for (auto& in_info: oi_identification.identified_inputs)
 
@@ -417,7 +417,7 @@ TxSearch::search()
                         // calculate how much we preasumply spent.
                         uint64_t total_sent {0};
 
-                        for (const XmrInput& in_data: inputs_found)
+                        for (const SinInput& in_data: inputs_found)
                             total_sent += in_data.amount;
 
                         if (tx_mysql_id == 0)
@@ -428,7 +428,7 @@ TxSearch::search()
                             // so write it to mysql as ours, with
                             // total received of 0.
 
-                            XmrTransaction tx_data;
+                            SinTransaction tx_data;
 
                             tx_data.hash             = oi_identification.get_tx_hash_str();
                             tx_data.prefix_hash      = oi_identification.get_tx_prefix_hash_str();
@@ -448,7 +448,7 @@ TxSearch::search()
                             tx_data.timestamp        = *blk_timestamp_mysql_format;
 
                             // insert tx_data into mysql's Transactions table
-                            tx_mysql_id = xmr_accounts->insert_tx(tx_data);
+                            tx_mysql_id = sin_accounts->insert_tx(tx_data);
 
                             if (tx_mysql_id == 0)
                             {
@@ -463,11 +463,11 @@ TxSearch::search()
                         } //   if (tx_mysql_id == 0)
 
                         // save all input found into database
-                        for (XmrInput& in_data: inputs_found)
+                        for (SinInput& in_data: inputs_found)
                         {
                             in_data.tx_id = tx_mysql_id; // set tx id now. before we made it 0
 
-                            uint64_t in_mysql_id = xmr_accounts->insert_input(in_data);
+                            uint64_t in_mysql_id = sin_accounts->insert_input(in_data);
 
                             //todo what shoud we do when insert_input fails?
                         }
@@ -492,7 +492,7 @@ TxSearch::search()
                 // update scanned_block_height every given interval
                 // or when we reached top of the blockchain
 
-                XmrAccount updated_acc = *acc;
+                SinAccount updated_acc = *acc;
 
                 if (!blk_timestamp_mysql_format)
                 {
@@ -504,7 +504,7 @@ TxSearch::search()
                 updated_acc.scanned_block_height    = searched_blk_no;
                 updated_acc.scanned_block_timestamp = *blk_timestamp_mysql_format;
 
-                if (xmr_accounts->update(*acc, updated_acc))
+                if (sin_accounts->update(*acc, updated_acc))
                 {
                     // iff success, set acc to updated_acc;
                     cout << "scanned_block_height updated"  << endl;
@@ -579,11 +579,11 @@ TxSearch::still_searching()
 void
 TxSearch::populate_known_outputs()
 {
-    vector<XmrOutput> outs;
+    vector<SinOutput> outs;
 
-    if (xmr_accounts->select_outputs(acc->id, outs))
+    if (sin_accounts->select_outputs(acc->id, outs))
     {
-        for (const XmrOutput& out: outs)
+        for (const SinOutput& out: outs)
         {
             public_key out_pub_key;
 
@@ -618,7 +618,7 @@ TxSearch::find_txs_in_mempool(
     // time in a single connection.
     // so we create local connection here, only to be used in this method.
 
-    shared_ptr<MySqlAccounts> local_xmr_accounts = make_shared<MySqlAccounts>();
+    shared_ptr<MySqlAccounts> local_sin_accounts = make_shared<MySqlAccounts>();
 
     for (const pair<uint64_t, transaction>& mtx: mempool_txs)
     {
@@ -631,7 +631,7 @@ TxSearch::find_txs_in_mempool(
         // and inputs in a given tx.
         OutputInputIdentification oi_identification {&address, &viewkey, &tx};
 
-        // FIRSt step. to search for the incoming xmr, we use address, viewkey and
+        // FIRSt step. to search for the incoming sin, we use address, viewkey and
         // outputs public key.
         oi_identification.identify_outputs();
 
@@ -689,9 +689,9 @@ TxSearch::find_txs_in_mempool(
                 // need to get output info from mysql, as we need
                 // to know output's amount, its orginal
                 // tx public key and its index in that tx
-                XmrOutput out;
+                SinOutput out;
 
-                if (local_xmr_accounts->output_exists(pod_to_hex(in_info.out_pub_key), out))
+                if (local_sin_accounts->output_exists(pod_to_hex(in_info.out_pub_key), out))
                 {
                     total_sent += out.amount;
 
@@ -737,7 +737,7 @@ TxSearch::find_txs_in_mempool(
                     j_tx["hash"]           = oi_identification.get_tx_hash_str();
                     j_tx["tx_pub_key"]     = oi_identification.get_tx_pub_key_str();
                     j_tx["timestamp"]      = recieve_time; // when it got into mempool
-                    j_tx["total_received"] = 0;          // we did not recive any outputs/xmr
+                    j_tx["total_received"] = 0;          // we did not recive any outputs/sin
                     j_tx["total_sent"]     = total_sent; // to be set later when looking for key images
                     j_tx["unlock_time"]    = 0;          // for mempool we set it to zero
                                                          // since we dont have block_height to work with
@@ -769,7 +769,7 @@ TxSearch::find_txs_in_mempool(
 
 
 pair<address_parse_info, secret_key>
-TxSearch::get_xmr_address_viewkey() const
+TxSearch::get_sin_address_viewkey() const
 {
     return make_pair(address, viewkey);
 }

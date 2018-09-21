@@ -1,19 +1,19 @@
 var config = {
     apiUrl: "http://127.0.0.1:1984/",
-    mainnetExplorerUrl: "https://xmrchain.com/",
-    testnetExplorerUrl: "https://testnet.xmrchain.com/",
+    mainnetExplorerUrl: "https://sinchain.com/",
+    testnetExplorerUrl: "https://testnet.sinchain.com/",
     stagenetExplorerUrl: "http://162.210.173.150:8083/",
     nettype: 0, /* 0 - MAINNET, 1 - TESTNET, 2 - STAGENET */
     coinUnitPlaces: 12,
-    txMinConfirms: 10,         // corresponds to CRYPTONOTE_DEFAULT_TX_SPENDABLE_AGE in Monero
-    txCoinbaseMinConfirms: 60, // corresponds to CRYPTONOTE_MINED_MONEY_UNLOCK_WINDOW in Monero
-    coinSymbol: 'XMR',
-    openAliasPrefix: "xmr",
-    coinName: 'Monero',
-    coinUriPrefix: 'monero:',
-    addressPrefix: 18,
-    integratedAddressPrefix: 19,
-    subAddressPrefix: 42,
+    txMinConfirms: 10,         // corresponds to CRYPTONOTE_DEFAULT_TX_SPENDABLE_AGE in Scp1310jp1
+    txCoinbaseMinConfirms: 60, // corresponds to CRYPTONOTE_MINED_MONEY_UNLOCK_WINDOW in Scp1310jp1
+    coinSymbol: 'SIN',
+    openAliasPrefix: "sin",
+    coinName: 'Scp1310jp1',
+    coinUriPrefix: 'scp1310jp1:',
+    addressPrefix: 0x5d99,
+    integratedAddressPrefix: 0xd208,
+    subAddressPrefix: 0x359288,
     addressPrefixTestnet: 53,
     integratedAddressPrefixTestnet: 54,
     subAddressPrefixTestnet: 63,

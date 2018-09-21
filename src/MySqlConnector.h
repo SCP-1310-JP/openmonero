@@ -2,8 +2,8 @@
 // Created by mwo on 9/12/16.
 //
 
-#ifndef RESTBED_XMR_MYSQLCONNECTOR_H
-#define RESTBED_XMR_MYSQLCONNECTOR_H
+#ifndef RESTBED_SIN_MYSQLCONNECTOR_H
+#define RESTBED_SIN_MYSQLCONNECTOR_H
 
 //#include "tools.h"
 
@@ -13,7 +13,7 @@
 
 #include <iostream>
 
-namespace xmreg
+namespace sineg
 {
 
 using namespace mysqlpp;
@@ -71,4 +71,4 @@ public:
 }
 
 
-#endif //RESTBED_XMR_MYSQLCONNECTOR_H
+#endif //RESTBED_SIN_MYSQLCONNECTOR_H

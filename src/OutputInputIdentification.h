@@ -2,13 +2,13 @@
 // Created by mwo on 13/02/17.
 //
 
-#ifndef RESTBED_XMR_OUTPUTINPUTIDENTIFICATION_H
-#define RESTBED_XMR_OUTPUTINPUTIDENTIFICATION_H
+#ifndef RESTBED_SIN_OUTPUTINPUTIDENTIFICATION_H
+#define RESTBED_SIN_OUTPUTINPUTIDENTIFICATION_H
 
 #include "CurrentBlockchainStatus.h"
 #include "tools.h"
 
-namespace xmreg
+namespace sineg
 {
 
 
@@ -23,13 +23,13 @@ class OutputInputIdentificationException: public std::runtime_error
  * and searches for outputs in a given tx
  * and possible spendings/inputs.
  *
- * It is the key class for identification of incoming monero
- * and candidate outcoming xmr for a user in a blockchain and in
+ * It is the key class for identification of incoming scp1310jp1
+ * and candidate outcoming sin for a user in a blockchain and in
  * mempool.
  *
- * searching for our incoming and outgoing xmr has two components.
+ * searching for our incoming and outgoing sin has two components.
  *
- * FIRST. to search for the incoming xmr, we use address, viewkey and
+ * FIRST. to search for the incoming sin, we use address, viewkey and
  * outputs public key. Its straight forward, as this is what viewkey was
  * designed to do.
  *
@@ -102,7 +102,7 @@ public:
                               const transaction* _tx);
 
     /**
-     * FIRST step. search for the incoming xmr using address, viewkey and
+     * FIRST step. search for the incoming sin using address, viewkey and
      * outputs public keys.
      */
     void identify_outputs();
@@ -153,4 +153,4 @@ private:
 
 }
 
-#endif //RESTBED_XMR_OUTPUTINPUTIDENTIFICATION_H
+#endif //RESTBED_SIN_OUTPUTINPUTIDENTIFICATION_H

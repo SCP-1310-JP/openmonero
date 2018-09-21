@@ -1,15 +1,15 @@
 //
 // Created by mwo on 27/04/16.
 //
-#ifndef XMRLMDBCPP_MYLMDB_H
-#define XMRLMDBCPP_MYLMDB_H
+#ifndef SINLMDBCPP_MYLMDB_H
+#define SINLMDBCPP_MYLMDB_H
 
 #include "../ext/lmdb++.h"
 
 #include <iostream>
 #include <memory>
 
-namespace xmreg
+namespace sineg
 {
 
 using epee::string_tools::pod_to_hex;
@@ -38,7 +38,7 @@ std::ostream& operator<<(std::ostream& os, const output_info&  out_info)
      os  << ", out_pub_key: " << out_info.out_pub_key
          << ", tx_hash: " << out_info.tx_hash
          << ", tx_pub_key: " << out_info.tx_pub_key
-         << ", amount: " << XMR_AMOUNT(out_info.amount)
+         << ", amount: " << SIN_AMOUNT(out_info.amount)
          << ", index_in_tx: " << out_info.index_in_tx;
 
     return os;
@@ -99,7 +99,7 @@ public:
         string tx_hash_str = pod_to_hex(tx_hash);
 
         vector<cryptonote::txin_to_key> key_images
-                = xmreg::get_key_images(tx);
+                = sineg::get_key_images(tx);
 
         lmdb::txn wtxn {nullptr};
         lmdb::dbi wdbi {0};
@@ -150,7 +150,7 @@ public:
         string tx_hash_str = pod_to_hex(tx_hash);
 
         vector<tuple<txout_to_key, uint64_t, uint64_t>> outputs =
-                                xmreg::get_ouputs_tuple(tx);
+                                sineg::get_ouputs_tuple(tx);
 
         lmdb::txn wtxn  {nullptr};
         lmdb::dbi wdbi1 {0};
@@ -752,4 +752,4 @@ public:
 
 }
 
-#endif //XMRLMDBCPP_MYLMDB_H
+#endif //SINLMDBCPP_MYLMDB_H

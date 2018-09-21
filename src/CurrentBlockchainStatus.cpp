@@ -12,10 +12,10 @@
 #include "TxSearch.h"
 
 
-#undef MONERO_DEFAULT_LOG_CATEGORY
-#define MONERO_DEFAULT_LOG_CATEGORY "openmonero"
+#undef SCP1310JP1_DEFAULT_LOG_CATEGORY
+#define SCP1310JP1_DEFAULT_LOG_CATEGORY "openscp1310jp1"
 
-namespace xmreg
+namespace sineg
 {
 
 
@@ -23,7 +23,7 @@ namespace xmreg
 // initialize static variables
 atomic<uint64_t>        CurrentBlockchainStatus::current_height{0};
 string                  CurrentBlockchainStatus::blockchain_path{"/home/mwo/.blockchain/lmdb"};
-string                  CurrentBlockchainStatus::deamon_url{"http:://127.0.0.1:18081"};
+string                  CurrentBlockchainStatus::deamon_url{"http:://127.0.0.1:13102"};
 network_type            CurrentBlockchainStatus::net_type {network_type::MAINNET};
 bool                    CurrentBlockchainStatus::do_not_relay{false};
 bool                    CurrentBlockchainStatus::is_running{false};
@@ -34,12 +34,12 @@ uint64_t                CurrentBlockchainStatus::search_thread_life_in_seconds {
 vector<pair<uint64_t, transaction>> CurrentBlockchainStatus::mempool_txs;
 string                  CurrentBlockchainStatus::import_payment_address_str;
 string                  CurrentBlockchainStatus::import_payment_viewkey_str;
-uint64_t                CurrentBlockchainStatus::import_fee {10000000000}; // 0.01 xmr
+uint64_t                CurrentBlockchainStatus::import_fee {10000000000}; // 0.01 sin
 address_parse_info      CurrentBlockchainStatus::import_payment_address;
 secret_key              CurrentBlockchainStatus::import_payment_viewkey;
 map<string, unique_ptr<TxSearch>> CurrentBlockchainStatus::searching_threads;
 cryptonote::Blockchain* CurrentBlockchainStatus::core_storage;
-unique_ptr<xmreg::MicroCore>        CurrentBlockchainStatus::mcore;
+unique_ptr<sineg::MicroCore>        CurrentBlockchainStatus::mcore;
 
 void
 CurrentBlockchainStatus::start_monitor_blockchain_thread()
@@ -50,7 +50,7 @@ CurrentBlockchainStatus::start_monitor_blockchain_thread()
 
     if (!import_payment_address_str.empty() && !import_payment_viewkey_str.empty())
     {
-        if (!xmreg::parse_str_address(
+        if (!sineg::parse_str_address(
                 import_payment_address_str,
                 import_payment_address,
                 CurrentBlockchainStatus::net_type))
@@ -61,7 +61,7 @@ CurrentBlockchainStatus::start_monitor_blockchain_thread()
             return;
         }
 
-        if (!xmreg::parse_str_secret_key(
+        if (!sineg::parse_str_secret_key(
                 import_payment_viewkey_str,
                 import_payment_viewkey))
         {
@@ -103,11 +103,11 @@ CurrentBlockchainStatus::get_current_blockchain_height()
 
     try
     {
-        return xmreg::MyLMDB::get_blockchain_height(blockchain_path) - 1;
+        return sineg::MyLMDB::get_blockchain_height(blockchain_path) - 1;
     }
     catch(std::exception& e)
     {
-        cerr << "xmreg::MyLMDB::get_blockchain_height: " << e.what() << endl;
+        cerr << "sineg::MyLMDB::get_blockchain_height: " << e.what() << endl;
         return previous_height;
     }
 
@@ -121,13 +121,13 @@ CurrentBlockchainStatus::update_current_blockchain_height()
 }
 
 bool
-CurrentBlockchainStatus::init_monero_blockchain()
+CurrentBlockchainStatus::init_scp1310jp1_blockchain()
 {
-    // set  monero log output level
+    // set  scp1310jp1 log output level
     uint32_t log_level = 0;
     mlog_configure(mlog_get_default_log_path(""), true);
 
-    mcore = unique_ptr<xmreg::MicroCore>(new xmreg::MicroCore{});
+    mcore = unique_ptr<sineg::MicroCore>(new sineg::MicroCore{});
 
     // initialize the core using the blockchain path
     if (!mcore->init(blockchain_path, net_type))
@@ -590,7 +590,7 @@ CurrentBlockchainStatus::search_if_payment_made(
 
         // decrypt the encrypted_payment_id8
 
-        public_key tx_pub_key = xmreg::get_tx_pub_key_from_received_outs(tx);
+        public_key tx_pub_key = sineg::get_tx_pub_key_from_received_outs(tx);
 
 
         // public transaction key is combined with our viewkey
@@ -654,7 +654,7 @@ CurrentBlockchainStatus::search_if_payment_made(
 
             // get the tx output public key
             // that normally would be generated for us,
-            // if someone had sent us some xmr.
+            // if someone had sent us some sin.
             public_key generated_tx_pubkey;
 
             derive_public_key(derivation,
@@ -750,7 +750,7 @@ CurrentBlockchainStatus::get_output_key(uint64_t amount, uint64_t global_amount_
 }
 
 bool
-CurrentBlockchainStatus::start_tx_search_thread(XmrAccount acc)
+CurrentBlockchainStatus::start_tx_search_thread(SinAccount acc)
 {
     std::lock_guard<std::mutex> lck (searching_threads_map_mtx);
 
@@ -763,7 +763,7 @@ CurrentBlockchainStatus::start_tx_search_thread(XmrAccount acc)
 
     try
     {
-        // make a tx_search object for the given xmr account
+        // make a tx_search object for the given sin account
         //searching_threads.emplace(acc.address, new TxSearch(acc)); // does not work on older gcc
                                                                      // such as the one in ubuntu 16.04
         searching_threads[acc.address] = unique_ptr<TxSearch>(new TxSearch(acc));
@@ -849,7 +849,7 @@ CurrentBlockchainStatus::search_thread_exist(const string& address)
 }
 
 bool
-CurrentBlockchainStatus::get_xmr_address_viewkey(
+CurrentBlockchainStatus::get_sin_address_viewkey(
         const string& address_str,
         address_parse_info& address,
         secret_key& viewkey)
@@ -863,8 +863,8 @@ CurrentBlockchainStatus::get_xmr_address_viewkey(
         return false;
     }
 
-    address = searching_threads[address_str].get()->get_xmr_address_viewkey().first;
-    viewkey = searching_threads[address_str].get()->get_xmr_address_viewkey().second;
+    address = searching_threads[address_str].get()->get_sin_address_viewkey().first;
+    viewkey = searching_threads[address_str].get()->get_sin_address_viewkey().second;
 
     return true;
 };
@@ -939,7 +939,7 @@ CurrentBlockchainStatus::find_key_images_in_mempool(std::vector<txin_v> const& v
         {
             const transaction &m_tx = mtx.second;
 
-            vector<txin_to_key> input_key_imgs = xmreg::get_key_images(m_tx);
+            vector<txin_to_key> input_key_imgs = sineg::get_key_images(m_tx);
 
             for (auto const& mki: input_key_imgs)
             {
@@ -1078,8 +1078,8 @@ CurrentBlockchainStatus::construct_output_rct_field(
                                            // not the ones we actually spend.
             // ringct coinbase txs are special. they have identity mask.
             // as suggested by this code:
-            // https://github.com/monero-project/monero/blob/eacf2124b6822d088199179b18d4587404408e0f/src/wallet/wallet2.cpp#L893
-            // https://github.com/monero-project/monero/blob/master/src/blockchain_db/blockchain_db.cpp#L100
+            // https://github.com/scp1310jp1-project/scp1310jp1/blob/eacf2124b6822d088199179b18d4587404408e0f/src/wallet/wallet2.cpp#L893
+            // https://github.com/scp1310jp1-project/scp1310jp1/blob/master/src/blockchain_db/blockchain_db.cpp#L100
             // rtc_mask   = pod_to_hex(rct::identity());
         }
 

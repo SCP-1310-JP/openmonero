@@ -2,8 +2,8 @@
 # CMake helper for the majority of the cpp-ethereum modules.
 #
 # This module defines
-#     Monero_XXX_LIBRARIES, the libraries needed to use ethereum.
-#     Monero_FOUND, If false, do not try to use ethereum.
+#     Scp1310jp1_XXX_LIBRARIES, the libraries needed to use ethereum.
+#     Scp1310jp1_FOUND, If false, do not try to use ethereum.
 #
 # File addetped from cpp-ethereum
 #
@@ -32,7 +32,7 @@ set(LIBS common;blocks;cryptonote_basic;cryptonote_core;
 		cryptonote_protocol;daemonizer;mnemonics;epee;lmdb;device;
 		blockchain_db;ringct;wallet;cncrypto;easylogging;version;checkpoints)
 
-set(Xmr_INCLUDE_DIRS "${CPP_MONERO_DIR}")
+set(Sin_INCLUDE_DIRS "${CPP_SCP1310JP1_DIR}")
 
 # if the project is a subset of main cpp-ethereum project
 # use same pattern for variables as Boost uses
@@ -41,37 +41,37 @@ foreach (l ${LIBS})
 
 	string(TOUPPER ${l} L)
 
-	find_library(Xmr_${L}_LIBRARY
+	find_library(Sin_${L}_LIBRARY
 			NAMES ${l}
 			PATHS ${CMAKE_LIBRARY_PATH}
 			PATH_SUFFIXES "/src/${l}" "/src/" "/external/db_drivers/lib${l}" "/lib" "/src/crypto" "/contrib/epee/src" "/external/easylogging++/"
 			NO_DEFAULT_PATH
 			)
 
-	set(Xmr_${L}_LIBRARIES ${Xmr_${L}_LIBRARY})
+	set(Sin_${L}_LIBRARIES ${Sin_${L}_LIBRARY})
 
-	message(STATUS FindMonero " Xmr_${L}_LIBRARIES ${Xmr_${L}_LIBRARY}")
+	message(STATUS FindScp1310jp1 " Sin_${L}_LIBRARIES ${Sin_${L}_LIBRARY}")
 
 	add_library(${l} STATIC IMPORTED)
-	set_property(TARGET ${l} PROPERTY IMPORTED_LOCATION ${Xmr_${L}_LIBRARIES})
+	set_property(TARGET ${l} PROPERTY IMPORTED_LOCATION ${Sin_${L}_LIBRARIES})
 
 endforeach()
 
 
-if (EXISTS ${MONERO_BUILD_DIR}/src/ringct/libringct_basic.a)
-	message(STATUS FindMonero " found libringct_basic.a")
+if (EXISTS ${SCP1310JP1_BUILD_DIR}/src/ringct/libringct_basic.a)
+	message(STATUS FindScp1310jp1 " found libringct_basic.a")
 	add_library(ringct_basic STATIC IMPORTED)
 	set_property(TARGET ringct_basic
-			PROPERTY IMPORTED_LOCATION ${MONERO_BUILD_DIR}/src/ringct/libringct_basic.a)
+			PROPERTY IMPORTED_LOCATION ${SCP1310JP1_BUILD_DIR}/src/ringct/libringct_basic.a)
 endif()
 
-message(STATUS ${MONERO_SOURCE_DIR}/build)
+message(STATUS ${SCP1310JP1_SOURCE_DIR}/build)
 
-# include monero headers
+# include scp1310jp1 headers
 include_directories(
-		${MONERO_SOURCE_DIR}/src
-		${MONERO_SOURCE_DIR}/external
-		${MONERO_SOURCE_DIR}/build
-		${MONERO_SOURCE_DIR}/external/easylogging++
-		${MONERO_SOURCE_DIR}/contrib/epee/include
-		${MONERO_SOURCE_DIR}/external/db_drivers/liblmdb)
+		${SCP1310JP1_SOURCE_DIR}/src
+		${SCP1310JP1_SOURCE_DIR}/external
+		${SCP1310JP1_SOURCE_DIR}/build
+		${SCP1310JP1_SOURCE_DIR}/external/easylogging++
+		${SCP1310JP1_SOURCE_DIR}/contrib/epee/include
+		${SCP1310JP1_SOURCE_DIR}/external/db_drivers/liblmdb)

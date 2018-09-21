@@ -2,15 +2,15 @@
 // Created by mwo on 14/12/16.
 //
 
-#ifndef RESTBED_XMR_SSQLSES_H
-#define RESTBED_XMR_SSQLSES_H
+#ifndef RESTBED_SIN_SSQLSES_H
+#define RESTBED_SIN_SSQLSES_H
 
 #include "../ext/json.hpp"
 
 #include <mysql++/mysql++.h>
 #include <mysql++/ssqls.h>
 
-namespace xmreg
+namespace sineg
 {
 
 using namespace std;
@@ -41,7 +41,7 @@ sql_create_8(Accounts, 1, 2,
              sql_timestamp      , modified);
 
 
-struct XmrAccount : public Accounts, Table
+struct SinAccount : public Accounts, Table
 {
 
     static constexpr const char* SELECT_STMT = R"(
@@ -92,7 +92,7 @@ sql_create_17(Transactions, 1, 2,
               sql_timestamp      , timestamp);
 
 
-struct XmrTransaction : public Transactions, Table
+struct SinTransaction : public Transactions, Table
 {
 
     static constexpr const char* SELECT_STMT = R"(
@@ -131,7 +131,7 @@ struct XmrTransaction : public Transactions, Table
                              WHERE `id` = %0q;
     )";
 
-    static constexpr const char* SUM_XMR_RECIEVED = R"(
+    static constexpr const char* SUM_SIN_RECIEVED = R"(
         SELECT SUM(`total_received`) AS total_received
                FROM `Transactions`
                WHERE `account_id` = %0q
@@ -168,7 +168,7 @@ sql_create_13(Outputs, 1, 3,
               sql_bigint_unsigned, mixin,
               sql_timestamp      , timestamp);
 
-struct XmrOutput : public Outputs, Table
+struct SinOutput : public Outputs, Table
 {
 
     static constexpr const char* SELECT_STMT = R"(
@@ -228,7 +228,7 @@ sql_create_7(Inputs, 1, 4,
              sql_timestamp      , timestamp);
 
 
-struct XmrInput : public Inputs, Table
+struct SinInput : public Inputs, Table
 {
 
     static constexpr const char* SELECT_STMT = R"(
@@ -270,7 +270,7 @@ sql_create_9(Payments, 1, 2,
              sql_timestamp      , modified);
 
 
-struct XmrPayment : public Payments, Table
+struct SinPayment : public Payments, Table
 {
 
     static constexpr const char* SELECT_STMT = R"(
@@ -303,4 +303,4 @@ struct XmrPayment : public Payments, Table
 }
 
 
-#endif //RESTBED_XMR_SSQLSES_H
+#endif //RESTBED_SIN_SSQLSES_H

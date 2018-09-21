@@ -10,7 +10,7 @@
 
 #include "ssqlses.h"
 
-namespace xmreg
+namespace sineg
 {
 
 
@@ -19,10 +19,10 @@ MysqlInputs::MysqlInputs(shared_ptr<MySqlConnector> _conn)
 {}
 
 bool
-MysqlInputs::select(const uint64_t& address_id, vector<XmrInput>& ins)
+MysqlInputs::select(const uint64_t& address_id, vector<SinInput>& ins)
 {
 
-    Query query = conn->query(XmrInput::SELECT_STMT);
+    Query query = conn->query(SinInput::SELECT_STMT);
     query.parse();
 
     try
@@ -47,10 +47,10 @@ MysqlInputs::select(const uint64_t& address_id, vector<XmrInput>& ins)
 
 
 bool
-MysqlInputs::select_for_tx(const uint64_t& address_id, vector<XmrInput>& ins)
+MysqlInputs::select_for_tx(const uint64_t& address_id, vector<SinInput>& ins)
 {
 
-    Query query = conn->query(XmrInput::SELECT_STMT2);
+    Query query = conn->query(SinInput::SELECT_STMT2);
     query.parse();
 
     try
@@ -75,10 +75,10 @@ MysqlInputs::select_for_tx(const uint64_t& address_id, vector<XmrInput>& ins)
 
 
 bool
-MysqlInputs::select_for_out(const uint64_t& output_id, vector<XmrInput>& ins)
+MysqlInputs::select_for_out(const uint64_t& output_id, vector<SinInput>& ins)
 {
 
-    Query query = conn->query(XmrInput::SELECT_STMT3);
+    Query query = conn->query(SinInput::SELECT_STMT3);
     query.parse();
 
     try
@@ -103,10 +103,10 @@ MysqlInputs::select_for_out(const uint64_t& output_id, vector<XmrInput>& ins)
 
 
 uint64_t
-MysqlInputs::insert(const XmrInput& in_data)
+MysqlInputs::insert(const SinInput& in_data)
 {
 
-    Query query = conn->query(XmrInput::INSERT_STMT);
+    Query query = conn->query(SinInput::INSERT_STMT);
     query.parse();
 
     try
@@ -143,9 +143,9 @@ MysqlOutpus::MysqlOutpus(shared_ptr<MySqlConnector> _conn): conn {_conn}
 {}
 
 bool
-MysqlOutpus::select(const uint64_t& address_id, vector<XmrOutput>& outs)
+MysqlOutpus::select(const uint64_t& address_id, vector<SinOutput>& outs)
 {
-    Query query = conn->query(XmrOutput::SELECT_STMT);
+    Query query = conn->query(SinOutput::SELECT_STMT);
     query.parse();
 
     try
@@ -170,14 +170,14 @@ MysqlOutpus::select(const uint64_t& address_id, vector<XmrOutput>& outs)
 
 
 bool
-MysqlOutpus::select(const uint64_t& out_id, XmrOutput& out)
+MysqlOutpus::select(const uint64_t& out_id, SinOutput& out)
 {
-    Query query = conn->query(XmrOutput::SELECT_STMT3);
+    Query query = conn->query(SinOutput::SELECT_STMT3);
     query.parse();
 
     try
     {
-        vector<XmrOutput> outs;
+        vector<SinOutput> outs;
 
         query.storein(outs, out_id);
 
@@ -204,9 +204,9 @@ MysqlOutpus::select(const uint64_t& out_id, XmrOutput& out)
 
 
 bool
-MysqlOutpus::select_for_tx(const uint64_t& tx_id, vector<XmrOutput>& outs)
+MysqlOutpus::select_for_tx(const uint64_t& tx_id, vector<SinOutput>& outs)
 {
-    Query query = conn->query(XmrOutput::SELECT_STMT2);
+    Query query = conn->query(SinOutput::SELECT_STMT2);
     query.parse();
 
     try
@@ -231,16 +231,16 @@ MysqlOutpus::select_for_tx(const uint64_t& tx_id, vector<XmrOutput>& outs)
 
 
 bool
-MysqlOutpus::exist(const string& output_public_key_str, XmrOutput& out)
+MysqlOutpus::exist(const string& output_public_key_str, SinOutput& out)
 {
 
-    Query query = conn->query(XmrOutput::EXIST_STMT);
+    Query query = conn->query(SinOutput::EXIST_STMT);
     query.parse();
 
     try
     {
 
-        vector<XmrOutput> outs;
+        vector<SinOutput> outs;
 
         query.storein(outs, output_public_key_str);
 
@@ -267,9 +267,9 @@ MysqlOutpus::exist(const string& output_public_key_str, XmrOutput& out)
 
 
 uint64_t
-MysqlOutpus::insert(const XmrOutput& out_data)
+MysqlOutpus::insert(const SinOutput& out_data)
 {
-    Query query = conn->query(XmrOutput::INSERT_STMT);
+    Query query = conn->query(SinOutput::INSERT_STMT);
     query.parse();
 
     // cout << query << endl;
@@ -314,9 +314,9 @@ MysqlTransactions::MysqlTransactions(shared_ptr<MySqlConnector> _conn): conn {_c
 {}
 
 bool
-MysqlTransactions::select(const uint64_t& address_id, vector<XmrTransaction>& txs)
+MysqlTransactions::select(const uint64_t& address_id, vector<SinTransaction>& txs)
 {
-    Query query = conn->query(XmrTransaction::SELECT_STMT);
+    Query query = conn->query(SinTransaction::SELECT_STMT);
     query.parse();
 
     try
@@ -341,9 +341,9 @@ MysqlTransactions::select(const uint64_t& address_id, vector<XmrTransaction>& tx
 
 
 uint64_t
-MysqlTransactions::insert(const XmrTransaction& tx_data)
+MysqlTransactions::insert(const SinTransaction& tx_data)
 {
-    Query query = conn->query(XmrTransaction::INSERT_STMT);
+    Query query = conn->query(SinTransaction::INSERT_STMT);
     query.parse();
 
     // cout << query << endl;
@@ -389,7 +389,7 @@ MysqlTransactions::insert(const XmrTransaction& tx_data)
 uint64_t
 MysqlTransactions::mark_spendable(const uint64_t& tx_id_no)
 {
-    Query query = conn->query(XmrTransaction::MARK_AS_SPENDABLE_STMT);
+    Query query = conn->query(SinTransaction::MARK_AS_SPENDABLE_STMT);
     query.parse();
 
     try
@@ -417,7 +417,7 @@ MysqlTransactions::mark_spendable(const uint64_t& tx_id_no)
 uint64_t
 MysqlTransactions::delete_tx(const uint64_t& tx_id_no)
 {
-    Query query = conn->query(XmrTransaction::DELETE_STMT);
+    Query query = conn->query(SinTransaction::DELETE_STMT);
     query.parse();
 
     try
@@ -442,15 +442,15 @@ MysqlTransactions::delete_tx(const uint64_t& tx_id_no)
 
 
 bool
-MysqlTransactions::exist(const uint64_t& account_id, const string& tx_hash_str, XmrTransaction& tx)
+MysqlTransactions::exist(const uint64_t& account_id, const string& tx_hash_str, SinTransaction& tx)
 {
 
-    Query query = conn->query(XmrTransaction::EXIST_STMT);
+    Query query = conn->query(SinTransaction::EXIST_STMT);
     query.parse();
 
     try
     {
-        vector<XmrTransaction> outs;
+        vector<SinTransaction> outs;
 
         query.storein(outs, account_id, tx_hash_str);
 
@@ -478,7 +478,7 @@ MysqlTransactions::exist(const uint64_t& account_id, const string& tx_hash_str, 
 uint64_t
 MysqlTransactions::get_total_recieved(const uint64_t& account_id)
 {
-    Query query = conn->query(XmrTransaction::SUM_XMR_RECIEVED);
+    Query query = conn->query(SinTransaction::SUM_SIN_RECIEVED);
     query.parse();
 
     try
@@ -505,10 +505,10 @@ MysqlPayments::MysqlPayments(shared_ptr<MySqlConnector> _conn): conn {_conn}
 {}
 
 bool
-MysqlPayments::select(const string& address, vector<XmrPayment>& payments)
+MysqlPayments::select(const string& address, vector<SinPayment>& payments)
 {
 
-    Query query = conn->query(XmrPayment::SELECT_STMT);
+    Query query = conn->query(SinPayment::SELECT_STMT);
     query.parse();
 
     try
@@ -532,10 +532,10 @@ MysqlPayments::select(const string& address, vector<XmrPayment>& payments)
 }
 
 bool
-MysqlPayments::select_by_payment_id(const string& payment_id, vector<XmrPayment>& payments)
+MysqlPayments::select_by_payment_id(const string& payment_id, vector<SinPayment>& payments)
 {
 
-    Query query = conn->query(XmrPayment::SELECT_STMT2);
+    Query query = conn->query(SinPayment::SELECT_STMT2);
     query.parse();
 
     try
@@ -560,10 +560,10 @@ MysqlPayments::select_by_payment_id(const string& payment_id, vector<XmrPayment>
 
 
 uint64_t
-MysqlPayments::insert(const XmrPayment& payment_data)
+MysqlPayments::insert(const SinPayment& payment_data)
 {
 
-    Query query = conn->query(XmrPayment::INSERT_STMT);
+    Query query = conn->query(SinPayment::INSERT_STMT);
     query.parse();
 
     // cout << query << endl;
@@ -598,7 +598,7 @@ MysqlPayments::insert(const XmrPayment& payment_data)
 
 
 bool
-MysqlPayments::update(XmrPayment& payment_orginal, XmrPayment& payment_new)
+MysqlPayments::update(SinPayment& payment_orginal, SinPayment& payment_new)
 {
 
     Query query = conn->query();
@@ -641,15 +641,15 @@ MySqlAccounts::MySqlAccounts()
 
 
 bool
-MySqlAccounts::select(const string& address, XmrAccount& account)
+MySqlAccounts::select(const string& address, SinAccount& account)
 {
 
-    Query query = conn->query(XmrAccount::SELECT_STMT);
+    Query query = conn->query(SinAccount::SELECT_STMT);
     query.parse();
 
     try
     {
-        vector<XmrAccount> res;
+        vector<SinAccount> res;
         query.storein(res, address);
 
         if (!res.empty())
@@ -674,7 +674,7 @@ MySqlAccounts::select(const string& address, XmrAccount& account)
 }
 
 bool
-MySqlAccounts::select(const int64_t& acc_id, XmrAccount& account)
+MySqlAccounts::select(const int64_t& acc_id, SinAccount& account)
 {
 
     if (!conn->connect())
@@ -685,12 +685,12 @@ MySqlAccounts::select(const int64_t& acc_id, XmrAccount& account)
         return false;
     }
 
-    Query query = conn->query(XmrAccount::SELECT_STMT2);
+    Query query = conn->query(SinAccount::SELECT_STMT2);
     query.parse();
 
     try
     {
-        vector<XmrAccount> res;
+        vector<SinAccount> res;
         query.storein(res, acc_id);
 
         if (!res.empty())
@@ -721,7 +721,7 @@ MySqlAccounts::insert(const string& address,
                       uint64_t const& current_blkchain_height)
 {
 
-    Query query = conn->query(XmrAccount::INSERT_STMT);
+    Query query = conn->query(SinAccount::INSERT_STMT);
     query.parse();
 
     // cout << query << endl;
@@ -760,36 +760,36 @@ MySqlAccounts::insert(const string& address,
 }
 
 uint64_t
-MySqlAccounts::insert_tx(const XmrTransaction& tx_data)
+MySqlAccounts::insert_tx(const SinTransaction& tx_data)
 {
     return mysql_tx->insert(tx_data);
 }
 
 uint64_t
-MySqlAccounts::insert_output(const XmrOutput& tx_out)
+MySqlAccounts::insert_output(const SinOutput& tx_out)
 {
     return mysql_out->insert(tx_out);
 }
 
 uint64_t
-MySqlAccounts::insert_input(const XmrInput& tx_in)
+MySqlAccounts::insert_input(const SinInput& tx_in)
 {
     return mysql_in->insert(tx_in);
 }
 
 bool
-MySqlAccounts::select_txs(const string& xmr_address, vector<XmrTransaction>& txs)
+MySqlAccounts::select_txs(const string& sin_address, vector<SinTransaction>& txs)
 {
     // having address first get its address_id
 
 
     // a placeholder for exciting or new account data
-    xmreg::XmrAccount acc;
+    sineg::SinAccount acc;
 
     // select this account if its existing one
-    if (!select(xmr_address, acc))
+    if (!select(sin_address, acc))
     {
-        cerr << "Address" << xmr_address << "does not exist in database" << endl;
+        cerr << "Address" << sin_address << "does not exist in database" << endl;
         return false;
     }
 
@@ -797,7 +797,7 @@ MySqlAccounts::select_txs(const string& xmr_address, vector<XmrTransaction>& txs
 }
 
 bool
-MySqlAccounts::select_txs(const uint64_t& account_id, vector<XmrTransaction>& txs)
+MySqlAccounts::select_txs(const uint64_t& account_id, vector<SinTransaction>& txs)
 {
     return mysql_tx->select(account_id, txs);
 }
@@ -806,14 +806,14 @@ MySqlAccounts::select_txs(const uint64_t& account_id, vector<XmrTransaction>& tx
 bool
 MySqlAccounts::select_txs_for_account_spendability_check(
         const uint64_t& account_id,
-        vector<XmrTransaction>& txs)
+        vector<SinTransaction>& txs)
 {
-    vector<XmrTransaction> txs_tmp;
+    vector<SinTransaction> txs_tmp;
 
     if (!select_txs(account_id, txs_tmp))
         return false;
 
-    for (XmrTransaction& tx: txs_tmp)
+    for (SinTransaction& tx: txs_tmp)
     {
         // first we check if txs stored in db are already spendable
         // it means if they are older than 10 blocks. If  yes,
@@ -837,9 +837,9 @@ MySqlAccounts::select_txs_for_account_spendability_check(
                 {
 //                    throw runtime_error("no_row_updated != 1 "
 //                                                "due to "
-//                                                "xmr_accounts->mark_tx_spendable(tx.id)");
+//                                                "sin_accounts->mark_tx_spendable(tx.id)");
 
-                    cerr << "no_row_updated != 1 due to  xmr_accounts->mark_tx_spendable(tx.id)\n";
+                    cerr << "no_row_updated != 1 due to  sin_accounts->mark_tx_spendable(tx.id)\n";
                     return false;
                 }
 
@@ -868,8 +868,8 @@ MySqlAccounts::select_txs_for_account_spendability_check(
                     {
 //                        throw runtime_error("no_row_updated != 1 "
 //                                                    "due to "
-//                                                    "xmr_accounts->delete_tx(tx.id)");
-                        cerr << "no_row_updated != 1 due to  xmr_accounts->delete_tx(tx.id)\n";
+//                                                    "sin_accounts->delete_tx(tx.id)");
+                        cerr << "no_row_updated != 1 due to  sin_accounts->delete_tx(tx.id)\n";
                         return false;
                     }
 
@@ -897,7 +897,7 @@ MySqlAccounts::select_txs_for_account_spendability_check(
 
         txs.push_back(tx);
 
-    } //for (XmrTransaction& tx: txs_tmp)
+    } //for (SinTransaction& tx: txs_tmp)
 
     return true;
 }
@@ -905,51 +905,51 @@ MySqlAccounts::select_txs_for_account_spendability_check(
 
 
 bool
-MySqlAccounts::select_outputs(const uint64_t& account_id, vector<XmrOutput>& outs)
+MySqlAccounts::select_outputs(const uint64_t& account_id, vector<SinOutput>& outs)
 {
     return mysql_out->select(account_id, outs);
 }
 
 bool
-MySqlAccounts::select_output_with_id(const uint64_t& out_id, XmrOutput& out)
+MySqlAccounts::select_output_with_id(const uint64_t& out_id, SinOutput& out)
 {
     return mysql_out->select(out_id, out);
 }
 
 bool
-MySqlAccounts::select_outputs_for_tx(const uint64_t& tx_id, vector<XmrOutput>& outs)
+MySqlAccounts::select_outputs_for_tx(const uint64_t& tx_id, vector<SinOutput>& outs)
 {
     return mysql_out->select_for_tx(tx_id, outs);
 }
 
 bool
-MySqlAccounts::select_inputs(const uint64_t& account_id, vector<XmrInput>& ins)
+MySqlAccounts::select_inputs(const uint64_t& account_id, vector<SinInput>& ins)
 {
     return mysql_in->select(account_id, ins);
 }
 
 
 bool
-MySqlAccounts::select_inputs_for_tx(const uint64_t& tx_id, vector<XmrInput>& ins)
+MySqlAccounts::select_inputs_for_tx(const uint64_t& tx_id, vector<SinInput>& ins)
 {
     return mysql_in->select_for_tx(tx_id, ins);
 }
 
 
 bool
-MySqlAccounts::select_inputs_for_out(const uint64_t& output_id, vector<XmrInput>& ins)
+MySqlAccounts::select_inputs_for_out(const uint64_t& output_id, vector<SinInput>& ins)
 {
     return mysql_in->select_for_out(output_id, ins);
 }
 
 bool
-MySqlAccounts::output_exists(const string& output_public_key_str, XmrOutput& out)
+MySqlAccounts::output_exists(const string& output_public_key_str, SinOutput& out)
 {
     return mysql_out->exist(output_public_key_str, out);
 }
 
 bool
-MySqlAccounts::tx_exists(const uint64_t& account_id, const string& tx_hash_str, XmrTransaction& tx)
+MySqlAccounts::tx_exists(const uint64_t& account_id, const string& tx_hash_str, SinTransaction& tx)
 {
     return mysql_tx->exist(account_id, tx_hash_str, tx);
 }
@@ -967,28 +967,28 @@ MySqlAccounts::delete_tx(const uint64_t& tx_id_no)
 }
 
 uint64_t
-MySqlAccounts::insert_payment(const XmrPayment& payment)
+MySqlAccounts::insert_payment(const SinPayment& payment)
 {
     return mysql_payment->insert(payment);
 }
 
 bool
-MySqlAccounts::select_payment_by_id(const string& payment_id, vector<XmrPayment>& payments)
+MySqlAccounts::select_payment_by_id(const string& payment_id, vector<SinPayment>& payments)
 {
     return mysql_payment->select_by_payment_id(payment_id, payments);
 }
 
 bool
-MySqlAccounts::select_payment_by_address(const string& address, vector<XmrPayment>& payments)
+MySqlAccounts::select_payment_by_address(const string& address, vector<SinPayment>& payments)
 {
     return mysql_payment->select(address, payments);
 }
 
 bool
-MySqlAccounts::select_payment_by_address(const string& address, XmrPayment& payment)
+MySqlAccounts::select_payment_by_address(const string& address, SinPayment& payment)
 {
 
-    vector<XmrPayment> payments;
+    vector<SinPayment> payments;
 
     bool r = mysql_payment->select(address, payments);
 
@@ -1006,7 +1006,7 @@ MySqlAccounts::select_payment_by_address(const string& address, XmrPayment& paym
 
 
 bool
-MySqlAccounts::update_payment(XmrPayment& payment_orginal, XmrPayment& payment_new)
+MySqlAccounts::update_payment(SinPayment& payment_orginal, SinPayment& payment_new)
 {
     return mysql_payment->update(payment_orginal, payment_new);
 }
@@ -1019,7 +1019,7 @@ MySqlAccounts::get_total_recieved(const uint64_t& account_id)
 
 
 bool
-MySqlAccounts::update(XmrAccount& acc_orginal, XmrAccount& acc_new)
+MySqlAccounts::update(SinAccount& acc_orginal, SinAccount& acc_new)
 {
 
     Query query = conn->query();

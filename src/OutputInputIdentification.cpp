@@ -5,7 +5,7 @@
 #include "OutputInputIdentification.h"
 
 
-namespace xmreg
+namespace sineg
 {
 
 OutputInputIdentification::OutputInputIdentification(
@@ -19,7 +19,7 @@ OutputInputIdentification::OutputInputIdentification(
     tx = _tx;
 
     tx_hash     = get_transaction_hash(*tx);
-    tx_pub_key  = xmreg::get_tx_pub_key_from_received_outs(*tx);
+    tx_pub_key  = sineg::get_tx_pub_key_from_received_outs(*tx);
 
     tx_is_coinbase = is_coinbase(*tx);
 
@@ -46,7 +46,7 @@ uint64_t
 OutputInputIdentification::get_mixin_no()
 {
     if (mixin_no == 0 && !tx_is_coinbase)
-        mixin_no = xmreg::get_mixin_no(*tx);
+        mixin_no = sineg::get_mixin_no(*tx);
 
     return mixin_no;
 }
@@ -68,7 +68,7 @@ OutputInputIdentification::identify_outputs()
 
         // get the tx output public key
         // that normally would be generated for us,
-        // if someone had sent us some xmr.
+        // if someone had sent us some sin.
         public_key generated_tx_pubkey;
 
         derive_public_key(derivation,
@@ -165,7 +165,7 @@ void
 OutputInputIdentification::identify_inputs(
         const vector<pair<public_key, uint64_t>>& known_outputs_keys)
 {
-    vector<txin_to_key> input_key_imgs = xmreg::get_key_images(*tx);
+    vector<txin_to_key> input_key_imgs = sineg::get_key_images(*tx);
 
     size_t search_misses = {0};
 

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.2)
 
 set(PROJECT_NAME
-        openmonero)
+        openscp1310jp1)
 
 project(${PROJECT_NAME})
 
@@ -12,48 +12,48 @@ if(CMAKE_SIZEOF_VOID_P EQUAL "4")
   add_definitions(-DMDB_VL32)
 endif()
 
-if (NOT MONERO_DIR)
-    set(MONERO_DIR ~/monero)
+if (NOT SCP1310JP1_DIR)
+    set(SCP1310JP1_DIR ~/scp1310jp1)
 endif()
 
-message(STATUS MONERO_DIR ": ${MONERO_DIR}")
+message(STATUS SCP1310JP1_DIR ": ${SCP1310JP1_DIR}")
 
-set(MONERO_SOURCE_DIR ${MONERO_DIR}
-        CACHE PATH "Path to the root directory for Monero")
+set(SCP1310JP1_SOURCE_DIR ${SCP1310JP1_DIR}
+        CACHE PATH "Path to the root directory for Scp1310jp1")
 
-# set location of monero build tree
-set(MONERO_BUILD_DIR ${MONERO_SOURCE_DIR}/build/release/
-        CACHE PATH "Path to the build directory for Monero")
+# set location of scp1310jp1 build tree
+set(SCP1310JP1_BUILD_DIR ${SCP1310JP1_SOURCE_DIR}/build/release/
+        CACHE PATH "Path to the build directory for Scp1310jp1")
 
 set(MY_CMAKE_DIR "${CMAKE_CURRENT_LIST_DIR}/cmake"
         CACHE PATH "The path to the cmake directory of the current project")
 
 list(APPEND CMAKE_MODULE_PATH "${MY_CMAKE_DIR}")
 
-set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} "${MONERO_BUILD_DIR}"
-        CACHE PATH "Add Monero directory for library searching")
+set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} "${SCP1310JP1_BUILD_DIR}"
+        CACHE PATH "Add Scp1310jp1 directory for library searching")
 
 include(MyUtils)
 
-find_package(Monero)
+find_package(Scp1310jp1)
 
 include_directories(/usr/include/mysql)
 
 # include boost headers
 include_directories(${Boost_INCLUDE_DIRS})
 
-# include monero headers
+# include scp1310jp1 headers
 include_directories("ext/restbed/source")
 
 include_directories(
-    ${MONERO_SOURCE_DIR}/build
+    ${SCP1310JP1_SOURCE_DIR}/build
     /usr/local/include
     /usr/local/include/mysql
     /usr/local/opt/openssl/include
 )
 
 link_directories(
-    ${MONERO_BUILD_DIR}/src/crypto
+    ${SCP1310JP1_BUILD_DIR}/src/crypto
     /usr/local/lib
     /usr/local/opt/openssl/lib
 )

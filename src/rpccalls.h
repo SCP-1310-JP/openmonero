@@ -3,14 +3,14 @@
 //
 
 
-#ifndef CROWXMR_RPCCALLS_H
-#define CROWXMR_RPCCALLS_H
+#ifndef CROWSIN_RPCCALLS_H
+#define CROWSIN_RPCCALLS_H
 
-#include "monero_headers.h"
+#include "scp1310jp1_headers.h"
 
 #include <mutex>
 
-namespace xmreg
+namespace sineg
 {
 
 using namespace cryptonote;
@@ -34,11 +34,11 @@ class rpccalls
 
 public:
 
-    rpccalls(string _deamon_url = "http:://127.0.0.1:18081",
+    rpccalls(string _deamon_url = "http:://127.0.0.1:13102",
              uint64_t _timeout = 200000);
 
     bool
-    connect_to_monero_deamon();
+    connect_to_scp1310jp1_deamon();
     uint64_t
     get_current_height();
 
@@ -78,4 +78,4 @@ public:
 
 }
 
-#endif //CROWXMR_RPCCALLS_H
+#endif //CROWSIN_RPCCALLS_H

@@ -1,6 +1,6 @@
 #include "src/CmdLineOptions.h"
 #include "src/MicroCore.h"
-#include "src/YourMoneroRequests.h"
+#include "src/YourScp1310jp1Requests.h"
 
 #include <iostream>
 #include <memory>
@@ -17,7 +17,7 @@ main(int ac, const char* av[])
 {
 
 // get command line options
-xmreg::CmdLineOptions opts {ac, av};
+sineg::CmdLineOptions opts {ac, av};
 
 auto help_opt         = opts.get_option<bool>("help");
 
@@ -77,24 +77,24 @@ cryptonote::network_type nettype = testnet ?
   cryptonote::network_type::STAGENET : cryptonote::network_type::MAINNET;
 
 // set blockchain status monitoring thread parameters
-xmreg::CurrentBlockchainStatus::net_type
+sineg::CurrentBlockchainStatus::net_type
         = nettype;
-xmreg::CurrentBlockchainStatus::do_not_relay
+sineg::CurrentBlockchainStatus::do_not_relay
         = do_not_relay;
-xmreg::CurrentBlockchainStatus::refresh_block_status_every_seconds
+sineg::CurrentBlockchainStatus::refresh_block_status_every_seconds
         = config_json["refresh_block_status_every_seconds"];
-xmreg::CurrentBlockchainStatus::max_number_of_blocks_to_import
+sineg::CurrentBlockchainStatus::max_number_of_blocks_to_import
         = config_json["max_number_of_blocks_to_import"];
-xmreg::CurrentBlockchainStatus::search_thread_life_in_seconds
+sineg::CurrentBlockchainStatus::search_thread_life_in_seconds
         = config_json["search_thread_life_in_seconds"];
-xmreg::CurrentBlockchainStatus::import_fee
+sineg::CurrentBlockchainStatus::import_fee
         = config_json["wallet_import"]["fee"];
 
 
 string deamon_url;
 
 // get blockchain path
-// if confing.json paths are emtpy, defeault monero
+// if confing.json paths are emtpy, defeault scp1310jp1
 // paths are going to be used
 path blockchain_path;
 
@@ -103,25 +103,25 @@ switch (nettype)
     case cryptonote::network_type::MAINNET:
         blockchain_path = path(config_json["blockchain-path"]["mainnet"].get<string>());
         deamon_url = config_json["daemon-url"]["mainnet"];
-        xmreg::CurrentBlockchainStatus::import_payment_address_str
+        sineg::CurrentBlockchainStatus::import_payment_address_str
                 = config_json["wallet_import"]["mainnet"]["address"];
-        xmreg::CurrentBlockchainStatus::import_payment_viewkey_str
+        sineg::CurrentBlockchainStatus::import_payment_viewkey_str
                 = config_json["wallet_import"]["mainnet"]["viewkey"];
         break;
     case cryptonote::network_type::TESTNET:
         blockchain_path = path(config_json["blockchain-path"]["testnet"].get<string>());
         deamon_url = config_json["daemon-url"]["testnet"];
-        xmreg::CurrentBlockchainStatus::import_payment_address_str
+        sineg::CurrentBlockchainStatus::import_payment_address_str
                 = config_json["wallet_import"]["testnet"]["address"];
-        xmreg::CurrentBlockchainStatus::import_payment_viewkey_str
+        sineg::CurrentBlockchainStatus::import_payment_viewkey_str
                 = config_json["wallet_import"]["testnet"]["viewkey"];
         break;
     case cryptonote::network_type::STAGENET:
         blockchain_path = path(config_json["blockchain-path"]["stagenet"].get<string>());
         deamon_url = config_json["daemon-url"]["stagenet"];
-        xmreg::CurrentBlockchainStatus::import_payment_address_str
+        sineg::CurrentBlockchainStatus::import_payment_address_str
                 = config_json["wallet_import"]["stagenet"]["address"];
-        xmreg::CurrentBlockchainStatus::import_payment_viewkey_str
+        sineg::CurrentBlockchainStatus::import_payment_viewkey_str
                 = config_json["wallet_import"]["stagenet"]["viewkey"];
         break;
     default:
@@ -130,36 +130,36 @@ switch (nettype)
 }
 
 
-if (!xmreg::get_blockchain_path(blockchain_path, nettype))
+if (!sineg::get_blockchain_path(blockchain_path, nettype))
 {
     cerr << "Error getting blockchain path.\n";
     return EXIT_FAILURE;
 }
 
 // set remaining  blockchain status variables that depend on the network type
-xmreg::CurrentBlockchainStatus::blockchain_path
+sineg::CurrentBlockchainStatus::blockchain_path
         =  blockchain_path.string();
-xmreg::CurrentBlockchainStatus::deamon_url
+sineg::CurrentBlockchainStatus::deamon_url
         = deamon_url;
 
 cout << "Blockchain path: " << blockchain_path.string() << endl;
 
 
 // set mysql/mariadb connection details
-xmreg::MySqlConnector::url      = config_json["database"]["url"];
-xmreg::MySqlConnector::port     = config_json["database"]["port"];
-xmreg::MySqlConnector::username = config_json["database"]["user"];
-xmreg::MySqlConnector::password = config_json["database"]["password"];
-xmreg::MySqlConnector::dbname   = config_json["database"]["dbname"];
+sineg::MySqlConnector::url      = config_json["database"]["url"];
+sineg::MySqlConnector::port     = config_json["database"]["port"];
+sineg::MySqlConnector::username = config_json["database"]["user"];
+sineg::MySqlConnector::password = config_json["database"]["password"];
+sineg::MySqlConnector::dbname   = config_json["database"]["dbname"];
 
 
 // try connecting to the mysql
-shared_ptr<xmreg::MySqlAccounts> mysql_accounts;
+shared_ptr<sineg::MySqlAccounts> mysql_accounts;
 
 try
 {
     // MySqlAccounts will try connecting to the mysql database
-    mysql_accounts = make_shared<xmreg::MySqlAccounts>();
+    mysql_accounts = make_shared<sineg::MySqlAccounts>();
 }
 catch(std::exception const& e)
 {
@@ -171,12 +171,12 @@ catch(std::exception const& e)
 // since CurrentBlockchainStatus class monitors current status
 // of the blockchain (e.g., current height), its seems logical to
 // make static objects for accessing the blockchain in this class.
-// this way monero accessing blockchain variables (i.e. mcore and core_storage)
+// this way scp1310jp1 accessing blockchain variables (i.e. mcore and core_storage)
 // are not passed around like crazy everywhere. Uri( "file:///tmp/dh2048.pem"
 // There are here, and this is the only class that
 // has direct access to blockchain and talks (using rpc calls)
 // with the deamon.
-if (!xmreg::CurrentBlockchainStatus::init_monero_blockchain())
+if (!sineg::CurrentBlockchainStatus::init_scp1310jp1_blockchain())
 {
     cerr << "Error accessing blockchain." << endl;
     return EXIT_FAILURE;
@@ -186,14 +186,14 @@ if (!xmreg::CurrentBlockchainStatus::init_monero_blockchain())
 // info, e.g., current height. Information from this thread is used
 // by tx searching threads that are launched for each user independently,
 // when they log back or create new account.
-xmreg::CurrentBlockchainStatus::start_monitor_blockchain_thread();
+sineg::CurrentBlockchainStatus::start_monitor_blockchain_thread();
 
 
 
 // create REST JSON API services
-xmreg::YourMoneroRequests open_monero(mysql_accounts);
+sineg::YourScp1310jp1Requests open_scp1310jp1(mysql_accounts);
 
-// create Open Monero APIs
+// create Open Scp1310jp1 APIs
 MAKE_RESOURCE(login);
 MAKE_RESOURCE(get_address_txs);
 MAKE_RESOURCE(get_address_info);
@@ -208,7 +208,7 @@ MAKE_RESOURCE(get_version);
 // restbed service
 Service service;
 
-// Publish the Open Monero API created so that front end can use it
+// Publish the Open Scp1310jp1 API created so that front end can use it
 service.publish(login);
 service.publish(get_address_txs);
 service.publish(get_address_info);
