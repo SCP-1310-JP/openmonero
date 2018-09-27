@@ -1,6 +1,6 @@
 var config = {
-    apiUrl: "http://127.0.0.1:1984/",
-    mainnetExplorerUrl: "https://sinchain.com/",
+    apiUrl: "https://wallet.scp1310.jp:1984/",
+    mainnetExplorerUrl: "http://explorer.scp1310.jp:8081/",
     testnetExplorerUrl: "https://testnet.sinchain.com/",
     stagenetExplorerUrl: "http://162.210.173.150:8083/",
     nettype: 0, /* 0 - MAINNET, 1 - TESTNET, 2 - STAGENET */

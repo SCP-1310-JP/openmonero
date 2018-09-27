@@ -1,45 +1,66 @@
 <div class="coloured">
   <div class="w-container">
-    <h1 class="slider-heading">That was simple. Your Account has been created</h1>
-
-    <div class="subhead-text">Already have an account?&nbsp;
-      <a class="login-link steps pointer" data-ix="display-login" show-modal="login">Login to an existing Scp1310jp1 account</a>
+    <h1 class="slider-heading">アカウントが作成されました。</h1>
+    <h1 class="slider-heading">(Your Account has been created)</h1>
+    <div class="subhead-text">すでにアカウントをお持ちですか？(Already have an account?)&nbsp;
+      <a class="login-link steps pointer" data-ix="display-login" show-modal="login">既存のアカウントにログイン(Login to an existing account)</a>
     </div>
   </div>
 </div>
 <div>
   <div class="w-container create-account-container">
     <div class="no-account-div top-box">
-      <div class="info-header middle">Take Note of your Private Login Key!</div>
+      <div class="info-header middle">プライベートログインキーは大切に保管してください。</div>
+      <div class="info-header middle">(Take Note of your Private Login Key!)</div>
       <div class="no-account-text thin middle">
-	Below this you will find your thirteen word "Private Login Key". Keeping this secure and private is very important, as it is
+        この下に、「プライベートログインキー」が表示されます。
+        これを安全かつプライベートに保つことは、アカウントにログインできる唯一の方法であるため、非常に重要です。
+        「プライベートログインキー」はサーバーに保存しないので、失われた場合は回復する方法はありません。
+	<br><br>
+        Below this you will find your thirteen word "Private Login Key". Keeping this secure and private is very important, as it is
 	the only way that you will be able to login to your account. As we don't store your private login key on the server
-	there is no way to recover it if it is lost!<br><br>Your private login key can also never be changed, and if it is stolen or otherwise
+	there is no way to recover it if it is lost!<br><br>
+
+        「プライベートログインキー」は変更することはできません。
+         盗難した場合など、新しい「プライベートログインキー」を作成して資金を移動する必要があります。
+         そのため「プライベートログインキー」は、詩や手紙の一部として隠して、複数の安全な場所に保管することをお勧めします。
+        
+        <br><br>Your private login key can also never be changed, and if it is stolen or otherwise
 	compromised, you will have to move your funds to a new account with a new private login key. Therefore, it is best that you
 	backup your private login key by writing it down, perhaps obscuring it as part of a poem or letter, and storing it in multiple
 	safe and secure places.
       </div>
     </div>
     <div class="no-account-div top-box">
-      <div class="info-header middle">Understand the Risks in Using this Service</div>
+      <div class="info-header middle">このサービスを使用する際のリスクを理解してください。</div>
+      <div class="info-header middle">(Understand the Risks in Using this Service)</div>
       <div class="no-account-text thin middle">
-	This is a web-based interface that allows you to use Scp1310jp1 without running a full Scp1310jp1 node. However, because this convenience
+        これは、SCP-1310-JP-1ノードを実行せずにSCP-1310-JP-1を使用できるWebベースのインターフェイスです。
+        ただし、この利便性はコストがかかります。コードをブラウザに安全に配信することは非常に困難です。
+        これは、大量にこのサービスを使用する際に大きなリスクがあることを意味します。<br><br>
+
+	This is a web-based interface that allows you to use SCP-1310-JP-1 without running a full SCP-1310-JP-1 node. However, because this convenience
 	comes at a cost: it is extremely difficult to securely deliver its code to your browser. This means that there is
-	considerable risk in using this service for large amounts!<br><br>It is recommended that you treat this service as you would treat your
-	actual wallet, and not store very large amounts in it. For long-term storage of Scp1310jp1 you should create a cold wallet using
-	<a href="https://scp1310jp1address.org/">Scp1310jp1Address</a> or similar.
+	considerable risk in using this service for large amounts!<br><br>
+
+        このサービスは、実際の財布を扱うように扱い、大量の金額を保管しないようにすることをお勧めします。<br><br>
+
+        It is recommended that you treat this service as you would treat your
+	actual wallet, and not store very large amounts in it.
       </div>
     </div>
     <div class="no-account-div upper-box">
-      <div class="info-header middle-top">Your Private Login Key</div>
+      <div class="info-header middle-top">プライベートログインキー</div>
+      <div class="info-header middle-top">(Your Private Login Key)</div>
       <div class="result-text">{{mnemonic}}</div>
     </div>
     <div class="mid-div">
       <div class="w-form formwrap login-key-form">
         <form id="email-form" name="email-form" data-name="Email Form" data-redirect="/overview.html" ng-submit="login(seed, mnemonic, mnemonic_confirmation)" >
-          <label class="info-header form middle" for="Login-Key">Confirm your Private Login Key</label>
-          <input class="w-input mnemonic-page" id="Login-Key" type="text" ng-model="mnemonic_confirmation" placeholder="Type your Private Login Key out here to confirm it" name="Login-Key" data-name="Login Key" autocomplete="off" required="">
-          <input class="w-button mnemonic-login" id="form-submit" type="submit" value="I&#39;ve written down my Private Login Key, log me in!" data-wait="Please wait...">
+          <label class="info-header form middle" for="Login-Key">プライベートログインキーの確認</label>
+          <label class="info-header form middle" for="Login-Key">(Confirm your Private Login Key)</label>
+          <input class="w-input mnemonic-page" id="Login-Key" type="text" ng-model="mnemonic_confirmation" placeholder="プライベートログインキーをここに入力して確認してください(Type your Private Login Key out here to confirm it)" name="Login-Key" data-name="Login Key" autocomplete="off" required="">
+          <input class="w-button mnemonic-login" id="form-submit" type="submit" value="Login" data-wait="Please wait...">
         </form>
         <div class="w-form-fail" style="display: block;" ng-show="!!error">
           <p>{{error}}</p>
