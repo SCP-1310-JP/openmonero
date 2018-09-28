@@ -73,7 +73,7 @@ thinwalletCtrls.controller('ReceiveCoinsCtrl', function($scope, AccountService, 
                 if (payment_id8.length !== 16 || !(/^[0-9a-fA-F]{16}$/.test(payment_id8)))
                 {
                     $scope.integarted_address = "Not avaliable due to error"
-                    $scope.error = "The payment ID you've entered is not valid";
+                    $scope.error = "支払いIDが無効です (The payment ID you've entered is not valid)";
                     return;
                 }
 

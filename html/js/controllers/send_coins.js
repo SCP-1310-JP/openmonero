@@ -321,7 +321,7 @@ thinwalletCtrls.controller('SendCoinsCtrl', function($scope, $http, $q,
                 if (payment_id.length !== 64 || !(/^[0-9a-fA-F]{64}$/.test(payment_id)))
                 {
                     $scope.submitting = false;
-                    $scope.error = "The payment ID you've entered is not valid";
+                    $scope.error = "支払いIDが無効です (The payment ID you've entered is not valid)";
                     return;
                 }
 
