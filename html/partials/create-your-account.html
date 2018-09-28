@@ -1,7 +1,8 @@
 <div class="coloured">
   <div class="w-container">
+    <h1 class="slider-heading">セキュリティクリアランスが解除されました。</h1>
     <h1 class="slider-heading">アカウントが作成されました。</h1>
-    <h1 class="slider-heading">(Your Account has been created)</h1>
+    <h1 class="slider-heading">(Security clearance was canceled. Your account has been created.)</h1>
     <div class="subhead-text">すでにアカウントをお持ちですか？(Already have an account?)&nbsp;
       <a class="login-link steps pointer" data-ix="display-login" show-modal="login">既存のアカウントにログイン(Login to an existing account)</a>
     </div>
@@ -22,12 +23,12 @@
 	there is no way to recover it if it is lost!<br><br>
 
         「プライベートログインキー」は変更することはできません。
-         盗難した場合など、新しい「プライベートログインキー」を作成して資金を移動する必要があります。
-         そのため「プライベートログインキー」は、詩や手紙の一部として隠して、複数の安全な場所に保管することをお勧めします。
+         盗難、盗聴または脳に直接干渉された場合など、新しい「プライベートログインキー」を作成してあなたの罪を移動する必要があります。
+         そのため「プライベートログインキー」は、心象風景の一部として隠して、複数の安全な場所に保管することをお勧めします。
         
-        <br><br>Your private login key can also never be changed, and if it is stolen or otherwise
-	compromised, you will have to move your funds to a new account with a new private login key. Therefore, it is best that you
-	backup your private login key by writing it down, perhaps obscuring it as part of a poem or letter, and storing it in multiple
+        <br><br>Your private login key can also never be changed, and if it is stolen or wiretap or direct brain interference,
+	you will have to move your sins to a new account with a new private login key. Therefore, it is best that you
+	backup your private login key by writing it down, perhaps obscuring it as part of a mental scenery, and storing it in multiple
 	safe and secure places.
       </div>
     </div>
@@ -43,10 +44,10 @@
 	comes at a cost: it is extremely difficult to securely deliver its code to your browser. This means that there is
 	considerable risk in using this service for large amounts!<br><br>
 
-        このサービスは、実際の財布を扱うように扱い、大量の金額を保管しないようにすることをお勧めします。<br><br>
+        このサービスは、実際の財布を扱うように扱い、大量の罪を保管しないようにすることをお勧めします。<br><br>
 
         It is recommended that you treat this service as you would treat your
-	actual wallet, and not store very large amounts in it.
+	actual wallet, and not store very large sins in it.
       </div>
     </div>
     <div class="no-account-div upper-box">
@@ -57,8 +58,8 @@
     <div class="mid-div">
       <div class="w-form formwrap login-key-form">
         <form id="email-form" name="email-form" data-name="Email Form" data-redirect="/overview.html" ng-submit="login(seed, mnemonic, mnemonic_confirmation)" >
-          <label class="info-header form middle" for="Login-Key">プライベートログインキーの確認</label>
-          <label class="info-header form middle" for="Login-Key">(Confirm your Private Login Key)</label>
+          <label class="info-header-red form middle" for="Login-Key">【警告】ログインするとSCP-1310-JPに暴露します。</label>
+          <label class="info-header-red form middle" for="Login-Key">([WARNING]When you log in you are exposed to SCP-1310-JP.)</label>
           <input class="w-input mnemonic-page" id="Login-Key" type="text" ng-model="mnemonic_confirmation" placeholder="プライベートログインキーをここに入力して確認してください(Type your Private Login Key out here to confirm it)" name="Login-Key" data-name="Login Key" autocomplete="off" required="">
           <input class="w-button mnemonic-login" id="form-submit" type="submit" value="Login" data-wait="Please wait...">
         </form>

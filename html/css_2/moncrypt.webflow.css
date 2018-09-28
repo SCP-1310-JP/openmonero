@@ -776,6 +776,26 @@ p {
   margin-bottom: 0px;
   text-align: center;
 }
+
+.info-header-red {
+  margin-right: 0px;
+  margin-bottom: 4px;
+  margin-left: 0px;
+  padding-right: 52px;
+  padding-left: 52px;
+  font-family: Proximanova, sans-serif;
+  color: #FF0000;
+  font-size: 19px;
+  line-height: 30px;
+  font-weight: 600;
+  text-align: left;
+}
+.info-header-red.middle {
+  margin-bottom: 15px;
+  line-height: 24px;
+  text-align: center;
+}
+
 .transaction-head {
   margin-top: 15px;
   font-family: Proximanova, sans-serif;
