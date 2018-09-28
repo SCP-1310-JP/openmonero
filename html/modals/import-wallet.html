@@ -4,11 +4,20 @@
       <a class="w-inline-block close-modal" data-ix="close-review-details" hide-modal>
         <div class="close-overlay pointer" data-ix="close-overlay">+</div>
       </a>
-      <h1 class="head-modal">Import transactions</h1>
-      <div class="subhead-text modal review">Import your transactions from the entire blockchain</div>
+      <h1 class="head-modal">取引履歴インポート</h1>
+      <h1 class="head-modal">(Import transactions)</h1>
+      <div class="subhead-text modal review">ブロックチェーン全体から取引履歴をインポートします</div>
       <div class="w-form form-wrapper">
         <form id="email-form" name="email-form" data-name="Email Form">
           <div class="move-text-div">
+            <div class="review-text">
+              以前の取引と口座残高をすべてインポートするには（バックエンドの設定によって異なります）、
+             以下の口座に1回限りの手数料<strong>{{import_fee | money:false:true}}</strong>を支払う必要があります。
+             scp1310jp1-wallet-cliプログラムで支払いを行うコマンドの例を以下に示します。
+             <br/>
+             トランザクションプールで転送が検出されると、インポート処理が開始されます。 
+             mempoolで転送が検出されるまでに数分かかることはありません。
+            </div>
             <div class="review-text">To import all your previous transactions and account
               balance you might (depends on the backend settings) have to pay a once-off
               import fee of <strong>{{import_fee | money:false:true}}</strong> to the
