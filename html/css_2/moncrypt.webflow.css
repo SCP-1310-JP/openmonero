@@ -1154,6 +1154,9 @@ p {
 .slider-heading {
   color: white;
 }
+.slider-heading-red {
+  color: red;
+}
 .img-icon {
   margin-right: 52px;
   margin-bottom: 40px;
