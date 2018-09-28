@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017, MyScp1310jp1.com
+// Copyright (c) 2014-2017, MyMonero.com
 // 
 // All rights reserved.
 // 
