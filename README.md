@@ -6,8 +6,8 @@ demonstrate how to provide Scp1310jp1 related JSON REST service. For this purpos
 
 
 Open Scp1310jp1 is an open source implementation of backend of
-https://myscp1310jp1.com/. The frontend, which includes HTML, CSS, JavaScript, was adapted
-from (and originally developed by) https://myscp1310jp1.com/.
+https://mymonero.com/. The frontend, which includes HTML, CSS, JavaScript, was adapted
+from (and originally developed by) https://mymonero.com/.
 
 Open Scp1310jp1's backend is open sourced, free
 to use, host and modify. Additionally, some features were added/changed as compared
