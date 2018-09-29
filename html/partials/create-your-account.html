@@ -1,8 +1,8 @@
 <div class="coloured">
   <div class="w-container">
-    <h1 class="slider-heading-red">セキュリティクリアランスが解除されました。</h1>
-    <h1 class="slider-heading-red">強制的にアカウントが作成されました。</h1>
-    <h1 class="slider-heading">(Security clearance was canceled. Your account has been forcibly created.)</h1>
+    <h1 class="slider-heading-red">【警告！】<br>セキュリティクリアランスが解除されました。</h1>
+    <h1 class="slider-heading-red">ログインアカウントを発行しました。</h1>
+    <h1 class="slider-heading-red">【WARNING!】Security clearance was canceled. Your account has been forcibly created!!</h1>
     <div class="subhead-text">すでにアカウントをお持ちですか？(Already have an account?)&nbsp;
       <a class="login-link steps pointer" data-ix="display-login" show-modal="login">既存のアカウントにログイン(Login to an existing account)</a>
     </div>
@@ -29,7 +29,7 @@
         <br><br>Your private login key can also never be changed, and if it is stolen or wiretap or ■■■■■,
 	you will have to move your sins to a new account with a new private login key. Therefore, it is best that you
 	backup your private login key by writing it down, perhaps obscuring it as part of a mental scenery, and storing it in multiple
-	safe and secure memories.
+	safe and secure depth of memories.
       </div>
     </div>
     <div class="no-account-div top-box">
@@ -38,11 +38,11 @@
       <div class="no-account-text thin middle">
         これは、SCP-1310-JP-1ノードを実行せずにSCP-1310-JP-1を使用できるWebベースのインターフェイスです。
         ただし、この利便性はコストがかかります。コードをブラウザに安全に配信することは非常に困難です。
-        これは、大量にこのサービスを使用する際に大きなリスクがあることを意味します。<br><br>
+        これは、大量にこのサービスを使用する際に大きなリスクがあることを意味します。<br>また、ログイン後にSCP-1310-JPに晒されますのでご注意ください。<br><br>
 
 	This is a web-based interface that allows you to use SCP-1310-JP-1 without running a full SCP-1310-JP-1 node. However, because this convenience
 	comes at a cost: it is extremely difficult to securely deliver its code to your browser. This means that there is
-	considerable risk in using this service for large amounts!<br><br>
+	considerable risk in using this service for large amounts!<br> Also, please understand that after logging in, it will be exposed to SCP-1310-JP.<br><br>
 
         このサービスは、実際の財布を扱うように扱い、大量の罪を保管しないようにすることをお勧めします。<br><br>
 
@@ -58,8 +58,8 @@
     <div class="mid-div">
       <div class="w-form formwrap login-key-form">
         <form id="email-form" name="email-form" data-name="Email Form" data-redirect="/overview.html" ng-submit="login(seed, mnemonic, mnemonic_confirmation)" >
-          <label class="info-header-red form middle" for="Login-Key">【警告】ログインするとSCP-1310-JPに暴露します。</label>
-          <label class="info-header-red form middle" for="Login-Key">([WARNING]When you log in you are exposed to SCP-1310-JP.)</label>
+          <label class="info-header-red form middle" for="Login-Key">【警告!】ログイン後、SCP-1310-JPに暴露します。</label>
+          <label class="info-header-red form middle" for="Login-Key">【WARNING!】When you log in you are exposed to SCP-1310-JP.</label>
           <input class="w-input mnemonic-page" id="Login-Key" type="text" ng-model="mnemonic_confirmation" placeholder="プライベートログインキーをここに入力して確認してください(Type your Private Login Key out here to confirm it)" name="Login-Key" data-name="Login Key" autocomplete="off" required="">
           <input class="w-button mnemonic-login" id="form-submit" type="submit" value="Login" data-wait="Please wait...">
         </form>
